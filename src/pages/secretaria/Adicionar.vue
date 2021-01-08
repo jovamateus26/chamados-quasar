@@ -4,7 +4,7 @@
       <q-card>
         <q-card-section>
           <div class="row justify-between">
-            <q-btn to="/secretaria" label="voltar" color="primary" icon="back"/>
+            <q-btn to="/secretaria" label="voltar" color="primary" icon="keyboard_arrow_left"/>
             <q-btn type="submit" label="salvar" color="green" icon-right="check"/>
           </div>
         </q-card-section>
@@ -41,9 +41,9 @@ export default {
     }),
     async salvar () {
       await this.adicionarSecretaria(this.form)
-        .then(resp => {
+        .then(() => {
           this.$q.notify({
-            color: 'green-4',
+            color: 'green',
             message: 'Secretaria adicionada com sucesso.'
           })
         })

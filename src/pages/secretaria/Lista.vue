@@ -4,12 +4,12 @@
       <q-card>
         <q-card-section>
           <div class="row justify-between">
-            <q-input class="col-md-4" dense color="primary" placeholder="Buscar">
+            <q-input v-model="busca" class="col-md-4" dense color="primary" placeholder="Buscar">
               <template v-slot:append>
                 <q-icon name="search"/>
               </template>
             </q-input>
-            <q-btn to="secretaria/adicionar" icon-right="send" color="primary" label="Adicionar"/>
+            <q-btn to="secretaria/adicionar" icon-right="keyboard_arrow_right" color="primary" label="Adicionar"/>
           </div>
         </q-card-section>
       </q-card>
@@ -72,7 +72,7 @@
 
           <q-card-actions align="right" class="bg-white">
             <q-btn color="primary" flat label="Não" v-close-popup/>
-            <q-btn text-color="red" flat label="Sim" v-close-popup/>
+            <q-btn @click="deletar(secretariaDelete)" text-color="red" flat label="Sim" v-close-popup/>
           </q-card-actions>
         </q-card>
       </q-dialog>
@@ -87,6 +87,7 @@ export default {
   // name: 'PageName',
   data () {
     return {
+      busca: '',
       colunas: [
         {
           name: 'desc',
@@ -107,7 +108,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      listarSecretarias: 'Secretaria/listarSecretarias'
+      listarSecretarias: 'Secretaria/listarSecretarias',
+      deletarSecretaria: 'Secretaria/deletarSecretaria'
     }),
     async listar () {
       await this.listarSecretarias()
@@ -115,6 +117,20 @@ export default {
     selecionarDelete (secretaria) {
       this.confirmDelete = !this.confirmDelete
       this.secretariaDelete = secretaria
+    },
+    deletar (secretaria) {
+      this.deletarSecretaria(secretaria)
+        .then(() => {
+          this.$q.notify({
+            color: 'green',
+            message: 'Secretaria deletada com sucesso.'
+          })
+          this.listar()
+        })
+        .catch(err => {
+          console.log('2')
+          console.log(err.response)
+        })
     }
   },
   mounted () {

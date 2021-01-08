@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-const listarSecretarias = ({ commit }) => {
+const listarSecretarias = async ({ commit }) => {
   return new Promise((resolve, reject) => {
     Vue.prototype.$axios.get('/secretaria')
       .then(resp => {
@@ -25,7 +25,22 @@ const adicionarSecretaria = ({ commit }, secretaria) => {
   })
 }
 
+const deletarSecretaria = ({ commit }, secretaria) => {
+  console.log(secretaria)
+  return new Promise((resolve, reject) => {
+    Vue.prototype.$axios.delete('/secretaria/' + secretaria.id)
+      .then(resp => {
+        console.log(resp)
+        resolve(resp)
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
+}
+
 export {
   listarSecretarias,
-  adicionarSecretaria
+  adicionarSecretaria,
+  deletarSecretaria
 }

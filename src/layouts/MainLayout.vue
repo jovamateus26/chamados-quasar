@@ -60,7 +60,7 @@ const linksData = [
     title: 'Departamentos',
     caption: 'Adicionar, editar e excluir',
     icon: 'code',
-    link: 'departamento'
+    link: '/departamento'
   },
   {
     title: 'Secretarias',

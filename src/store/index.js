@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import usuario from './Usuario'
 import secretaria from './Secretaria'
-// import example from './module-example'
+import departamento from './Departamento'
 
 Vue.use(Vuex)
 
@@ -11,7 +11,8 @@ export default function (/* { ssrContext } */) {
     modules: {
       // example
       Usuario: usuario,
-      Secretaria: secretaria
+      Secretaria: secretaria,
+      Departamento: departamento
     },
 
     // enable strict mode (adds overhead!)

@@ -18,7 +18,14 @@ const routes = [
     path: '/departamento',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') }
+      { path: '', component: () => import('pages/departamento/Lista.vue'), beforeEnter: logado }
+    ]
+  },
+  {
+    path: '/departamento/adicionar',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/departamento/Adicionar.vue'), beforeEnter: logado }
     ]
   },
   {
