@@ -4,8 +4,8 @@
       <q-card>
         <q-card-section>
           <div class="row justify-between">
-            <q-btn to="/departamento" label="voltar" color="primary" icon="keyboard_arrow_left"/>
-            <q-btn type="submit" label="salvar" color="green" icon-right="check"/>
+            <q-btn to="/departamento" label="voltar" color="secondary" icon="keyboard_arrow_left"/>
+            <q-btn type="submit" label="salvar" color="primary" icon-right="check"/>
           </div>
         </q-card-section>
       </q-card>
@@ -54,14 +54,14 @@ export default {
       this.salvarDepartamento(this.form)
         .then(() => {
           this.$q.notify({
-            color: 'green',
+            color: 'positive',
             message: 'Departamento salvo com sucesso'
           })
         })
         .catch(err => {
           const erro = err.response.data[0].message
           this.$q.notify({
-            color: 'red',
+            color: 'negative',
             message: `${erro}`
           })
         })

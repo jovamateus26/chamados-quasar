@@ -33,9 +33,9 @@
           </q-tr>
         </template>
         <template v-slot:body="props">
-          <q-tr :props="props">
+          <q-tr :props="props" @click="props.expand = !props.expand">
             <q-td auto-width>
-              <q-btn size="sm" color="primary" round dense @click="props.expand = !props.expand"
+              <q-btn size="sm" color="primary" round dense
                      :icon="props.expand ? 'remove' : 'add'"/>
             </q-td>
             <q-td
@@ -52,7 +52,7 @@
                 <div>
                   <q-btn-group rounded>
                     <q-btn icon="delete" @click="selecionarDelete(props.row)"/>
-                    <q-btn icon="edit"/>
+                    <q-btn icon="edit" @click="dialogEditar = !dialogEditar; secretariaEditar = props.row"/>
                   </q-btn-group>
                 </div>
               </div>
@@ -76,6 +76,19 @@
           </q-card-actions>
         </q-card>
       </q-dialog>
+      <q-dialog v-model="dialogEditar">
+        <q-card style="width: 300px">
+          <q-card-section class="text-center text-white bg-primary">
+            Alterar
+          </q-card-section>
+          <q-card-section>
+            <q-form class="q-gutter-y-md text-center">
+              <q-input v-model="secretariaEditar.secretaria" label="Departamento" class="col-12"/>
+              <q-btn color="primary" label="alterar" class="col-12" />
+            </q-form>
+          </q-card-section>
+        </q-card>
+      </q-dialog>
     </div>
   </q-page>
 </template>
@@ -84,7 +97,7 @@
 import { mapActions, mapState } from 'vuex'
 
 export default {
-  // name: 'PageName',
+  name: 'SecretariaLista',
   data () {
     return {
       busca: '',
@@ -100,7 +113,12 @@ export default {
         }
       ],
       confirmDelete: false,
-      secretariaDelete: []
+      secretariaDelete: [],
+      dialogEditar: false,
+      secretariaEditar: {
+        id: '',
+        secretaria: ''
+      }
     }
   },
   computed: {

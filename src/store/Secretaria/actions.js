@@ -26,11 +26,21 @@ const adicionarSecretaria = ({ commit }, secretaria) => {
 }
 
 const deletarSecretaria = ({ commit }, secretaria) => {
-  console.log(secretaria)
   return new Promise((resolve, reject) => {
     Vue.prototype.$axios.delete('/secretaria/' + secretaria.id)
       .then(resp => {
-        console.log(resp)
+        resolve(resp)
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
+}
+
+const editarSecretaria = ({ commit }, secretariaEditar) => {
+  return new Promise((resolve, reject) => {
+    Vue.prototype.$axios.put('/secretaria/' + secretariaEditar.id)
+      .then(resp => {
         resolve(resp)
       })
       .catch(err => {
@@ -42,5 +52,6 @@ const deletarSecretaria = ({ commit }, secretaria) => {
 export {
   listarSecretarias,
   adicionarSecretaria,
-  deletarSecretaria
+  deletarSecretaria,
+  editarSecretaria
 }

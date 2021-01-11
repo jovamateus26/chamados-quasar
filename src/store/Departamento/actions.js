@@ -4,7 +4,7 @@ const listarDepartamentos = ({ commit }) => {
   return new Promise((resolve, reject) => {
     Vue.prototype.$axios.get('/departamento')
       .then(resp => {
-        commit('SET_DEPARTAMENTO_LISTA')
+        commit('SET_DEPARTAMENTO_LISTA', resp.data)
         resolve()
       })
       .catch(err => {
