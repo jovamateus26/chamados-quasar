@@ -7,7 +7,7 @@
 // https://quasar.dev/quasar-cli/quasar-conf-js
 /* eslint-env node */
 
-module.exports = function (/* ctx */) {
+module.exports = function (ctx) {
   return {
     // https://quasar.dev/quasar-cli/supporting-ts
     supportTS: false,
@@ -71,6 +71,13 @@ module.exports = function (/* ctx */) {
           loader: 'eslint-loader',
           exclude: /node_modules/
         })
+      },
+
+      // Retorna o link da api de produção ou desensvolvimento
+      env: {
+        API: ctx.dev
+          ? 'http://localhost:3333'
+          : 'http://34.95.29.6:3333'
       }
     },
 
