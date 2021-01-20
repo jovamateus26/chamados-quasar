@@ -9,14 +9,14 @@
                 <q-icon name="search"/>
               </template>
             </q-input>
-            <q-btn to="departamento/adicionar" icon-right="keyboard_arrow_right" color="primary" label="Adicionar"/>
+            <q-btn to="/assunto/adicionar" icon-right="keyboard_arrow_right" label="adicionar" color="primary"/>
           </div>
         </q-card-section>
       </q-card>
       <q-table
-        title="Departamento"
-        :data="departamentoLista"
+        :data="listaAssuntos.data"
         :columns="colunas"
+        title="Assuntos"
       >
         <template v-slot:header="props">
           <q-tr :props="props">
@@ -28,6 +28,7 @@
             >
               {{ col.label }}
             </q-th>
+            <q-th auto-width/>
           </q-tr>
         </template>
         <template v-slot:body="props">
@@ -41,7 +42,13 @@
               :key="col.name"
               :props="props"
             >
-              {{ col.value }}
+              <div v-if="col.name === 'prioridade'" class="truncate-chip-labels">
+                <q-chip v-if="col.value === 1" color="negative" text-color="white">Crítica</q-chip>
+                <q-chip v-if="col.value === 2" color="warning" text-color="white">Alta</q-chip>
+                <q-chip v-if="col.value === 3" color="info" text-color="white">Média</q-chip>
+                <q-chip v-if="col.value === 4" color="positive" text-color="white">Baixa</q-chip>
+              </div>
+              <div v-else>{{ col.value }}</div>
             </q-td>
           </q-tr>
           <q-tr v-show="props.expand" :props="props">
@@ -58,78 +65,68 @@
           </q-tr>
         </template>
       </q-table>
-      <q-dialog v-model="confirmDelete" persistent transition-show="scale" transition-hide="scale">
-        <q-card style="width: 310px">
-          <q-card-section class="bg-negative text-white">
-            <div class="text-h6">Confirma a exclusão do item?</div>
-          </q-card-section>
+      <q-dialog persistent v-model="deleteDialog">
+        <q-card>
           <q-card-section>
-            <div class="text-center">
-              {{ selecionadoDepartamento.departamento }}
-            </div>
+            Confirma a exclusão do assunto
           </q-card-section>
-          <q-card-actions align="right" class="bg-white">
-            <q-btn label="Não" flat v-close-popup color="primary"/>
-            <q-btn label="sim" flat color="negative" @click="deletar"/>
+          <q-card-actions>
+            <q-btn flat color="primary" label="não" v-close-popup/>
+            <q-btn flat color="negative" label="sim" @click="deletar" v-close-popup/>
           </q-card-actions>
         </q-card>
       </q-dialog>
     </div>
   </q-page>
-
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex'
 
 export default {
+  name: 'listaAssunto',
   data () {
     return {
-      confirmDelete: false,
-      selecionadoDepartamento: {},
       colunas: [
         {
-          name: 'departamento',
-          required: true,
-          label: 'Departamento',
+          name: 'assunto',
+          label: 'Assunto',
           align: 'left',
-          field: row => row.departamento,
-          format: val => `${val}`,
-          sortable: true
+          field: row => row.assunto,
+          format: val => `${val}`
         },
         {
-          name: 'secretaria',
-          required: true,
-          label: 'Secretaria',
-          align: 'left',
-          field: row => row.secretaria.secretaria,
-          format: val => `${val}`,
-          sortable: true
+          name: 'prioridade',
+          label: 'Prioridade',
+          field: row => row.prioridade
         }
-      ]
+      ],
+      deleteDialog: false,
+      assunto: {}
     }
   },
   methods: {
     ...mapActions({
-      listarDepartamentos: 'Departamento/listarDepartamentos',
-      deletarDepartamento: 'Departamento/deletarDepartamento'
+      listarAssunto: 'Assunto/listarAssuntos',
+      deletarAssunto: 'Assunto/deletarAssunto'
     }),
-    selecionarDelete (departamento) {
-      this.confirmDelete = true
-      this.selecionadoDepartamento = departamento
+    async selecionarDelete (assunto) {
+      this.deleteDialog = !this.deleteDialog
+      this.assunto = assunto
     },
-    deletar () {
-      this.deletarDepartamento(this.selecionadoDepartamento)
+    async listar () {
+      await this.listarAssunto()
+    },
+    async deletar () {
+      this.deletarAssunto(this.assunto)
         .then(() => {
           this.$q.notify({
             color: 'positive',
-            message: 'Departamento deletado com sucesso'
+            message: 'Assunto deletado com sucesso'
           })
-          this.listarDepartamentos()
-          this.confirmDelete = false
+          this.listar()
         })
         .catch(err => {
-          console.log(err.response)
           this.$q.notify({
             color: 'negative',
             message: `${err.response.data[0].message}`
@@ -138,12 +135,10 @@ export default {
     }
   },
   computed: {
-    ...mapState(
-      'Departamento', ['departamentoLista']
-    )
+    ...mapState('Assunto', ['listaAssuntos'])
   },
   mounted () {
-    this.listarDepartamentos()
+    this.listarAssunto()
   }
 }
 </script>

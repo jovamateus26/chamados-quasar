@@ -11,12 +11,10 @@
       </q-card>
       <q-card>
         <q-card-section>
-
           <q-input
             label="Secretaria"
             v-model="form.secretaria"
           />
-
         </q-card-section>
       </q-card>
     </q-form>
@@ -27,7 +25,7 @@
 import { mapActions } from 'vuex'
 
 export default {
-  // name: 'PageName',
+  name: 'AdicionarSecretaria',
   data () {
     return {
       form: {

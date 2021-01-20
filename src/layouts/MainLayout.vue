@@ -57,16 +57,34 @@ const linksData = [
     link: '/inicio'
   },
   {
+    title: 'Chamados',
+    caption: 'Gerenciar chamados',
+    icon: 'grading',
+    link: '/chamado'
+  },
+  {
+    title: 'Assuntos',
+    caption: 'Adicionar, editar e excluir',
+    icon: 'menu_book',
+    link: '/assunto'
+  },
+  {
     title: 'Departamentos',
     caption: 'Adicionar, editar e excluir',
-    icon: 'code',
+    icon: 'domain',
     link: '/departamento'
   },
   {
     title: 'Secretarias',
     caption: 'Adicionar, editar e excluir',
-    icon: 'code',
+    icon: 'construction',
     link: '/secretaria'
+  },
+  {
+    title: 'Usuarios',
+    caption: 'Adicionar, editar e excluir',
+    icon: 'face',
+    link: '/usuario'
   }
 ]
 

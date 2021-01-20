@@ -52,7 +52,11 @@
                 <div>
                   <q-btn-group rounded>
                     <q-btn icon="delete" @click="selecionarDelete(props.row)"/>
-                    <q-btn icon="edit" @click="dialogEditar = !dialogEditar; secretariaEditar = props.row"/>
+                    <q-btn
+                      icon="edit"
+                      @click="dialogEditar = !dialogEditar;
+                      secretariaEditar.secretaria = props.row.secretaria; secretariaEditar.id = props.row.id"
+                    />
                   </q-btn-group>
                 </div>
               </div>
@@ -61,7 +65,7 @@
         </template>
       </q-table>
       <q-dialog v-model="confirmDelete" persistent transition-show="scale" transition-hide="scale">
-        <q-card class="bg-red text-white" style="width: 300px">
+        <q-card class="bg-negative text-white" style="width: 310px">
           <q-card-section>
             <div class="text-h6">Confirma a exclusão do item?</div>
           </q-card-section>
@@ -72,7 +76,7 @@
 
           <q-card-actions align="right" class="bg-white">
             <q-btn color="primary" flat label="Não" v-close-popup/>
-            <q-btn @click="deletar(secretariaDelete)" text-color="red" flat label="Sim" v-close-popup/>
+            <q-btn @click="deletar(secretariaDelete)" text-color="negative" flat label="Sim" v-close-popup/>
           </q-card-actions>
         </q-card>
       </q-dialog>
@@ -84,7 +88,7 @@
           <q-card-section>
             <q-form class="q-gutter-y-md text-center">
               <q-input v-model="secretariaEditar.secretaria" label="Departamento" class="col-12"/>
-              <q-btn color="primary" label="alterar" class="col-12" />
+              <q-btn color="primary" label="alterar" class="col-12" @click="editar"/>
             </q-form>
           </q-card-section>
         </q-card>
@@ -127,7 +131,8 @@ export default {
   methods: {
     ...mapActions({
       listarSecretarias: 'Secretaria/listarSecretarias',
-      deletarSecretaria: 'Secretaria/deletarSecretaria'
+      deletarSecretaria: 'Secretaria/deletarSecretaria',
+      editarSecretaria: 'Secretaria/editarSecretaria'
     }),
     async listar () {
       await this.listarSecretarias()
@@ -140,14 +145,33 @@ export default {
       this.deletarSecretaria(secretaria)
         .then(() => {
           this.$q.notify({
-            color: 'green',
+            color: 'positive',
             message: 'Secretaria deletada com sucesso.'
           })
           this.listar()
         })
         .catch(err => {
-          console.log('2')
-          console.log(err.response)
+          this.$q.notify({
+            color: 'negative',
+            message: `${err.response.data[0].message}`
+          })
+        })
+    },
+    editar () {
+      this.editarSecretaria(this.secretariaEditar)
+        .then(() => {
+          this.$q.notify({
+            color: 'positive',
+            message: 'Secretaria editada com sucesso.'
+          })
+          this.listar()
+          this.dialogEditar = false
+        })
+        .catch(err => {
+          this.$q.notify({
+            color: 'negative',
+            message: `${err.response.data[0].message}`
+          })
         })
     }
   },

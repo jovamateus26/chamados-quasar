@@ -39,7 +39,7 @@ const deletarSecretaria = ({ commit }, secretaria) => {
 
 const editarSecretaria = ({ commit }, secretariaEditar) => {
   return new Promise((resolve, reject) => {
-    Vue.prototype.$axios.put('/secretaria/' + secretariaEditar.id)
+    Vue.prototype.$axios.put('/secretaria/' + secretariaEditar.id, secretariaEditar)
       .then(resp => {
         resolve(resp)
       })

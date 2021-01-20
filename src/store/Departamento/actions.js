@@ -25,7 +25,20 @@ const salvarDepartamento = ({ commit }, departamento) => {
   })
 }
 
+const deletarDepartamento = ({ commit }, departamento) => {
+  return new Promise((resolve, reject) => {
+    Vue.prototype.$axios.delete('departamento/' + departamento.id)
+      .then(resp => {
+        resolve(resp)
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
+}
+
 export {
   listarDepartamentos,
-  salvarDepartamento
+  salvarDepartamento,
+  deletarDepartamento
 }

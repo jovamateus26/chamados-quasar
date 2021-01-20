@@ -4,18 +4,18 @@
       <q-card>
         <q-card-section>
           <div class="row justify-between">
-            <q-input class="col-md-4" dense color="primary" placeholder="Buscar">
+            <q-input v-model="busca" class="col-md-4" dense color="primary" placeholder="Buscar">
               <template v-slot:append>
                 <q-icon name="search"/>
               </template>
             </q-input>
-            <q-btn to="departamento/adicionar" icon-right="keyboard_arrow_right" color="primary" label="Adicionar"/>
+            <q-btn color="primary" label="adicionar" to="/registrar"/>
           </div>
         </q-card-section>
       </q-card>
       <q-table
-        title="Departamento"
-        :data="departamentoLista"
+        title="Usuários"
+        :data="listaUsuario.data"
         :columns="colunas"
       >
         <template v-slot:header="props">
@@ -46,6 +46,18 @@
           </q-tr>
           <q-tr v-show="props.expand" :props="props">
             <q-td colspan="100%">
+              <div class="row">
+                <div>Email: {{ props.row.email }}</div>
+              </div>
+              <div class="row">
+                <div>Celular: {{ props.row.celular }}</div>
+              </div>
+              <div class="row">
+                <div>Departamento: {{ props.row.departamento }}</div>
+              </div>
+              <div class="row" v-if="props.row.tipo ===1">
+                <div>Admin</div>
+              </div>
               <div class="text-left">
                 <div>
                   <q-btn-group rounded>
@@ -58,78 +70,70 @@
           </q-tr>
         </template>
       </q-table>
-      <q-dialog v-model="confirmDelete" persistent transition-show="scale" transition-hide="scale">
-        <q-card style="width: 310px">
+      <q-dialog v-model="confirmDeletarUsuario" persistent transition-show="scale" transition-hide="scale">
+        <q-card style="width: 300px">
           <q-card-section class="bg-negative text-white">
-            <div class="text-h6">Confirma a exclusão do item?</div>
+            Deseja deletar o usuário
           </q-card-section>
           <q-card-section>
             <div class="text-center">
-              {{ selecionadoDepartamento.departamento }}
+              {{ usuario.name }}
+            </div>
+            <div class="text-center">
+              {{ usuario.email }}
             </div>
           </q-card-section>
-          <q-card-actions align="right" class="bg-white">
-            <q-btn label="Não" flat v-close-popup color="primary"/>
-            <q-btn label="sim" flat color="negative" @click="deletar"/>
+          <q-card-actions>
+            <q-card-actions align="right" class="bg-white">
+              <q-btn label="Não" flat v-close-popup color="primary"/>
+              <q-btn label="sim" flat color="negative" @click="deletar"/>
+            </q-card-actions>
           </q-card-actions>
         </q-card>
       </q-dialog>
     </div>
   </q-page>
-
 </template>
 
 <script>
 import { mapActions, mapState } from 'vuex'
 
 export default {
+  name: 'UsuarioLista',
   data () {
     return {
-      confirmDelete: false,
-      selecionadoDepartamento: {},
+      busca: '',
       colunas: [
         {
-          name: 'departamento',
-          required: true,
-          label: 'Departamento',
+          name: 'name',
           align: 'left',
-          field: row => row.departamento,
-          format: val => `${val}`,
-          sortable: true
-        },
-        {
-          name: 'secretaria',
-          required: true,
-          label: 'Secretaria',
-          align: 'left',
-          field: row => row.secretaria.secretaria,
-          format: val => `${val}`,
-          sortable: true
+          field: row => row.name
         }
-      ]
+      ],
+      confirmDeletarUsuario: false,
+      usuario: {}
     }
   },
   methods: {
     ...mapActions({
-      listarDepartamentos: 'Departamento/listarDepartamentos',
-      deletarDepartamento: 'Departamento/deletarDepartamento'
+      listarUsuarios: 'Usuario/listarUsuarios',
+      deletarUsuario: 'Usuario/deletarUsuario'
     }),
-    selecionarDelete (departamento) {
-      this.confirmDelete = true
-      this.selecionadoDepartamento = departamento
+    selecionarDelete (usuario) {
+      this.confirmDeletarUsuario = !this.confirmDeletarUsuario
+      this.usuario = usuario
     },
-    deletar () {
-      this.deletarDepartamento(this.selecionadoDepartamento)
+    async deletar () {
+      this.deletarUsuario(this.usuario)
         .then(() => {
           this.$q.notify({
             color: 'positive',
-            message: 'Departamento deletado com sucesso'
+            message: 'Usuário deletado com sucesso.'
           })
-          this.listarDepartamentos()
-          this.confirmDelete = false
+          this.confirmDeletarUsuario = false
+          this.listarUsuarios()
         })
         .catch(err => {
-          console.log(err.response)
           this.$q.notify({
             color: 'negative',
             message: `${err.response.data[0].message}`
@@ -137,13 +141,11 @@ export default {
         })
     }
   },
-  computed: {
-    ...mapState(
-      'Departamento', ['departamentoLista']
-    )
+  async mounted () {
+    await this.listarUsuarios()
   },
-  mounted () {
-    this.listarDepartamentos()
+  computed: {
+    ...mapState('Usuario', ['listaUsuario'])
   }
 }
 </script>
