@@ -77,7 +77,7 @@ module.exports = function (ctx) {
       env: {
         API: ctx.dev
           ? 'http://localhost:3333'
-          : 'http://34.95.29.6:3333'
+          : 'https://api1.tibagi.pr.gov.br'
       }
     },
 
