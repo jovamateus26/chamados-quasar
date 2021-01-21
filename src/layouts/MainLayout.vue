@@ -32,11 +32,7 @@
         >
           Essential Links
         </q-item-label>
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+        <EssentialLink/>
       </q-list>
     </q-drawer>
 
@@ -85,6 +81,12 @@ const linksData = [
     caption: 'Adicionar, editar e excluir',
     icon: 'face',
     link: '/usuario'
+  },
+  {
+    title: 'Sair',
+    caption: 'Finalizar sua sessão de usuário',
+    icon: 'logout',
+    link: '/sair'
   }
 ]
 
