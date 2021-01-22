@@ -111,8 +111,8 @@
     </q-item>
     <q-item
       clickable
+      @click="sair"
       tag="a"
-      to="/sair"
       exact-active-class="IS-ACTIVATED"
     >
       <q-item-section avatar>
@@ -128,6 +128,12 @@
 
 <script>
 export default {
-  name: 'EssentialLink'
+  name: 'EssentialLink',
+  methods: {
+    sair () {
+      localStorage.removeItem('token')
+      location.reload()
+    }
+  }
 }
 </script>

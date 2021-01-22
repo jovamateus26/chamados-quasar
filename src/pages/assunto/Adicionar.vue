@@ -70,7 +70,6 @@ export default {
           })
         })
         .catch(err => {
-          console.log(err.response)
           this.$q.notify({
             color: 'negative',
             message: `${err.response.data[0].message}`

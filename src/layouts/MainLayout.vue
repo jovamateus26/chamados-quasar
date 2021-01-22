@@ -35,9 +35,18 @@
         <EssentialLink/>
       </q-list>
     </q-drawer>
-
     <q-page-container>
-      <router-view />
+      <router-view/>
+      <q-page-sticky position="bottom-right" :offset="fabPos">
+        <q-btn
+          v-touch-pan.prevent.mouse="moveFab"
+          color="primary"
+          round
+          icon="add"
+           size="lg"
+          to="/chamado/adicionar"
+        />
+      </q-page-sticky>
     </q-page-container>
   </q-layout>
 </template>
@@ -45,58 +54,28 @@
 <script>
 import EssentialLink from 'components/EssentialLink.vue'
 
-const linksData = [
-  {
-    title: 'Inicio',
-    caption: 'Pagina inicial',
-    icon: 'home',
-    link: '/inicio'
-  },
-  {
-    title: 'Chamados',
-    caption: 'Gerenciar chamados',
-    icon: 'grading',
-    link: '/chamado'
-  },
-  {
-    title: 'Assuntos',
-    caption: 'Adicionar, editar e excluir',
-    icon: 'menu_book',
-    link: '/assunto'
-  },
-  {
-    title: 'Departamentos',
-    caption: 'Adicionar, editar e excluir',
-    icon: 'domain',
-    link: '/departamento'
-  },
-  {
-    title: 'Secretarias',
-    caption: 'Adicionar, editar e excluir',
-    icon: 'construction',
-    link: '/secretaria'
-  },
-  {
-    title: 'Usuarios',
-    caption: 'Adicionar, editar e excluir',
-    icon: 'face',
-    link: '/usuario'
-  },
-  {
-    title: 'Sair',
-    caption: 'Finalizar sua sessão de usuário',
-    icon: 'logout',
-    link: '/sair'
-  }
-]
-
 export default {
   name: 'MainLayout',
   components: { EssentialLink },
   data () {
     return {
       leftDrawerOpen: false,
-      essentialLinks: linksData
+      fabPos: [18, 18],
+      draggingFab: false
+    }
+  },
+  methods: {
+    onClick () {
+      // console.log('Clicked on a fab action')
+    },
+
+    moveFab (ev) {
+      this.draggingFab = ev.isFirst !== true && ev.isFinal !== true
+
+      this.fabPos = [
+        this.fabPos[0] - ev.delta.x,
+        this.fabPos[1] - ev.delta.y
+      ]
     }
   }
 }
