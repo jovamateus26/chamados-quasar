@@ -49,8 +49,8 @@
               <div class="text-left">
                 <div>
                   <q-btn-group rounded>
-                    <q-btn icon="delete" @click="selecionarDelete(props.row)"/>
                     <q-btn icon="edit"/>
+                    <q-btn icon="delete" @click="selecionarDelete(props.row)"/>
                   </q-btn-group>
                 </div>
               </div>

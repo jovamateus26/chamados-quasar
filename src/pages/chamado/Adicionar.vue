@@ -23,6 +23,18 @@
             emit-value
             map-options
           ></q-select>
+          <q-select
+            v-model="chamado.responsavel"
+            label="Responsável"
+            use-input
+            input-debounce="0"
+            :options="listaUsuario.data"
+            option-label="name"
+            option-value="id"
+            @filter="buscarNomeUsuario"
+            emit-value
+            map-options
+          ></q-select>
 
           <q-select
             :options="listaAssuntos.data"
@@ -57,10 +69,11 @@ export default {
   data () {
     return {
       chamado: {
+        dono: '',
+        responsavel: '',
         assunto_id: '',
         titulo: '',
-        texto: '',
-        dono: ''
+        texto: ''
       }
     }
   },

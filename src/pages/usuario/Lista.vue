@@ -61,8 +61,9 @@
               <div class="text-left">
                 <div>
                   <q-btn-group rounded>
-                    <q-btn icon="delete" @click="selecionarDelete(props.row)"/>
                     <q-btn icon="edit"/>
+                    <q-btn icon="lock"/>
+                    <q-btn icon="delete" @click="selecionarDelete(props.row)"/>
                   </q-btn-group>
                 </div>
               </div>
@@ -91,6 +92,7 @@
           </q-card-actions>
         </q-card>
       </q-dialog>
+      <q-dialog v-model="confirmUsuarioAdmin" persistent transition-show="scale" transition-hide="scale"></q-dialog>
     </div>
   </q-page>
 </template>
@@ -111,7 +113,8 @@ export default {
         }
       ],
       confirmDeletarUsuario: false,
-      usuario: {}
+      usuario: {},
+      confirmUsuarioAdmin: false
     }
   },
   methods: {

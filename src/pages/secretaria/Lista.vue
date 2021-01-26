@@ -51,12 +51,12 @@
               <div class="text-left">
                 <div>
                   <q-btn-group rounded>
-                    <q-btn icon="delete" @click="selecionarDelete(props.row)"/>
                     <q-btn
                       icon="edit"
                       @click="dialogEditar = !dialogEditar;
                       secretariaEditar.secretaria = props.row.secretaria; secretariaEditar.id = props.row.id"
                     />
+                    <q-btn icon="delete" @click="selecionarDelete(props.row)"/>
                   </q-btn-group>
                 </div>
               </div>

@@ -67,10 +67,13 @@
       </q-table>
       <q-dialog persistent v-model="deleteDialog">
         <q-card>
-          <q-card-section>
+          <q-card-section class="bg-negative text-white" style="width: 300px">
             Confirma a exclusão do assunto
           </q-card-section>
-          <q-card-actions>
+          <q-card-section class="text-center">
+            {{assunto.assunto}}
+          </q-card-section>
+          <q-card-actions align="right">
             <q-btn flat color="primary" label="não" v-close-popup/>
             <q-btn flat color="negative" label="sim" @click="deletar" v-close-popup/>
           </q-card-actions>
